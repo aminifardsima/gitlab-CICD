@@ -1,0 +1,35 @@
+stages:
+  - build
+  - test
+  - deploy
+variables:
+  NGINX_CONTAINER_NAME: nginx  
+ 
+build: 
+  stage: build
+  script:
+    - echo "hello-build stage" > /home/gitlab-runner/file01.txt
+  only: 
+    - main
+  tags:
+    - shell-only    
+test: 
+  stage: test
+  script:
+    - echo "hello-test stage" >> /home/gitlab-runner/file01.txt
+  only: 
+    - main
+  tags:
+    - shell-only
+deploy:
+  stage: deploy
+  script:
+    # Pull the latest Nginx Docker image from the specified registry
+    - docker pull nginx:latest
+    # Run a Docker container named "nginx" using the pulled image
+    - docker run -d --name $NGINX_CONTAINER_NAME -p 800:80 nginx:latest
+    - echo "hello-build stage" >> /home/gitlab-runner/file01.txt
+  only:
+    - main
+  tags:
+    - shell-only
