@@ -1,0 +1,29 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build: 
+  stage: build
+  script:
+    - echo "hello-build stage" > /home/gitlab-runner/file01.txt
+  only: 
+    - main
+  tags:
+    - shell-only    
+test: 
+  stage: test
+  script:
+    - echo "hello-test stage" >> /home/gitlab-runner/file01.txt
+  only: 
+    - main
+  tags:
+    - shell-only
+deploy:
+  stage: deploy
+  script:
+    - echo "hello-deploy stage" >> /home/gitlab-runner/file01.txt
+  only:
+    - main
+  tags:
+    - shell-only 
